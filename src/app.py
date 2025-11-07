@@ -35,7 +35,9 @@ def handle_hello():
     members = jackson_family.get_all_members()
     response_body = {"hello": "world",
                      "family": members}
-    return jsonify(response_body), 200
+    if len(jackson_family._members)==0:
+        return "no hay miembros", 404
+    return jsonify(list(jackson_family.get_all_members())), 200
 
 
 @app.route('/members', methods=['POST'])
@@ -64,13 +66,15 @@ def add_new():
 @app.route('/members/<int:id>', methods=['DELETE'])
 def delete_member(id):
     jackson_family.delete_member(id)
-
+    if len(jackson_family._members)==0:
+        return "no hay miembros", 404
     return jsonify(jackson_family.get_all_members()), 200
 
 
 @app.route('/members/<int:id>', methods=['GET'])
 def get_member(id):
-
+    if len(jackson_family._members)==0:
+        return "no hay miembros", 404
     return jsonify(jackson_family.get_member(id)), 200
 
 
