@@ -5,6 +5,7 @@ Update this file to implement the following already declared methods:
 - get_member: Should return a member from the self._members list
 """
 
+
 class FamilyStructure:
     def __init__(self, last_name):
         self.last_name = last_name
@@ -40,37 +41,40 @@ class FamilyStructure:
         return generated_id
 
     def add_member(self, member):
-        ## You have to implement this method
-        ## Append the member to the list of _members
-        member["id"]=self._generate_id()
-        member["last_name"]=self.last_name
+        # You have to implement this method
+        # Append the member to the list of _members
+        member["id"] = self._generate_id()
+        member["last_name"] = self.last_name
 
         self._members.append(member)
-
-        
+        return member
 
     def delete_member(self, id):
-        ## You have to implement this method
-        ## Loop the list and delete the member with the given id
-        
-        for i in range(0,len(self._members)):
-            
-            if self._members[i]["id"]==id:
-                self._members.pop(i)
-                break
-            
+        # You have to implement this method
+        # Loop the list and delete the member with the given id
 
-        
+        for member in self._members:
+            if member["id"] == id:
+                self._members.remove(member)
+                return True
+
+        return False
 
     def get_member(self, id):
-        ## You have to implement this method
-        ## Loop all the members and return the one with the given id
-        for i in range(0,len(self._members)):
-            
-            if self._members[i]["id"]==id:
-                return self._members[i]
-        
+        # You have to implement this method
+        # Loop all the members and return the one with the given id
+        for member in self._members:
+            if member["id"] == id:
+
+                member_copy = member.copy()
+
+                member_copy.pop("last_name")
+
+                return member_copy
+
+        return None
 
     # This method is done, it returns a list with all the family members
+
     def get_all_members(self):
         return self._members

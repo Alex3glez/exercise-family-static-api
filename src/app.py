@@ -35,9 +35,9 @@ def handle_hello():
     members = jackson_family.get_all_members()
     response_body = {"hello": "world",
                      "family": members}
-    if len(jackson_family._members)==0:
+    if len(jackson_family._members) == 0:
         return "no hay miembros", 404
-    return jsonify(list(jackson_family.get_all_members())), 200
+    return jsonify(jackson_family.get_all_members()), 200
 
 
 @app.route('/members', methods=['POST'])
@@ -58,23 +58,25 @@ def add_new():
         jackson_family.add_member(body)
 
         return jsonify(jackson_family.get_all_members()), 200
-    
+
     missing_keys = required_list - body.keys()
     return f"error, Faltan las siguientes claves: {missing_keys}", 400
 
 
 @app.route('/members/<int:id>', methods=['DELETE'])
 def delete_member(id):
-    jackson_family.delete_member(id)
-    if len(jackson_family._members)==0:
-        return "no hay miembros", 404
-    return jsonify(jackson_family.get_all_members()), 200
+    se_borro = jackson_family.delete_member(id)
+
+    if se_borro:
+        return jsonify({"done": True}), 200
+    else:
+        return jsonify({"error": "miembro no encontrado"}), 404
 
 
 @app.route('/members/<int:id>', methods=['GET'])
 def get_member(id):
-    if len(jackson_family._members)==0:
-        return "no hay miembros", 404
+    if len(jackson_family._members) == 0:
+        return "miembro no encontrado", 404
     return jsonify(jackson_family.get_member(id)), 200
 
 
