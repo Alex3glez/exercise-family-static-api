@@ -55,9 +55,9 @@ def add_new():
             return "error, lucky_numbers debe ser una lista de números", 400
         if not all(isinstance(num, int) for num in body["lucky_numbers"]):
             return "error, La lista 'lucky_numbers' debe contener solo números enteros", 400
-        jackson_family.add_member(body)
+        new_member= jackson_family.add_member(body)
 
-        return jsonify(jackson_family.get_all_members()), 200
+        return jsonify(new_member), 200
 
     missing_keys = required_list - body.keys()
     return f"error, Faltan las siguientes claves: {missing_keys}", 400
@@ -69,8 +69,8 @@ def delete_member(id):
 
     if se_borro:
         return jsonify({"done": True}), 200
-    else:
-        return jsonify({"error": "miembro no encontrado"}), 404
+    
+    return jsonify({"error": "miembro no encontrado"}), 404
 
 
 @app.route('/members/<int:id>', methods=['GET'])
